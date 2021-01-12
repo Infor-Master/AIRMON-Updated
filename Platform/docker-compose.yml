@@ -1,0 +1,92 @@
+version: '2.3'
+
+services:
+  database:
+    container_name: 'AIRMON_database'
+    restart: unless-stopped
+    image: postgres:12
+    volumes:
+      - database-data:/var/lib/data/
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=passw0rd
+      - POSTGRES_DB=apidb
+    ports:
+      - '5432:5432'
+    networks: 
+      - private_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+  
+  pgadmin:
+    container_name: 'AIRMON_pgadmin'
+    restart: unless_stopped
+    image: dpage/pgadmin4
+    depends_on: 
+      database:
+        condition: service_healthy
+    environment: 
+      PGADMIN_DEFAULT_EMAIL: '36824@ufp.edu.pt'
+      PGADMIN_DEFAULT_PASSWORD: 'PgAdmin2021!'
+    ports: '5500:80'
+    networks: 
+      - private_network
+
+  backend:
+    container_name: 'AIRMON_backend'
+    restart: unless-stopped
+    build:
+      context: './Backend'
+      dockerfile: 'Dockerfile'
+    volumes:
+        - ./Backend:/go/src/airmon
+    depends_on:
+        database:
+          condition: service_healthy
+    environment: 
+      - CHOKIDAR_USEPOLLING=true
+    networks:
+      - private_network
+      - public_network
+    
+  frontend:
+    container_name: 'AIRMON_frontend'
+    restart: unless_stopped
+    build:
+      context: './Frontend'
+      dockerfile: 'Dockerfile'
+    volumes:
+      - ./Frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    networks: 
+      - public_network
+
+  proxy:
+    container_name: 'AIRMON_proxy'
+    restart: unless_stopped
+    depends_on: 
+      - frontend
+      - backend
+    build:
+      context: './Proxy'
+      dockerfile: 'Dockerfile'
+    ports:
+      - '5000:80'
+    networks: 
+      - public_network
+
+volumes:
+  database-data:
+
+networks:
+    public_network:
+        driver: bridge
+    private_network:
+        driver: bridge

@@ -1,0 +1,7 @@
+{
+  "URL": "localhost:5000",
+  "backend": {
+    "protocol": "http://",
+    "path": "/api"
+  }
+}
