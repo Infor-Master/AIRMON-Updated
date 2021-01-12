@@ -35,6 +35,8 @@ services:
       - '4500:80'
     networks: 
       - private_network
+    logging:
+      driver: none
 
   backend:
     container_name: 'AIRMON_backend'
