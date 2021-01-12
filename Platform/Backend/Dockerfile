@@ -1,12 +1,17 @@
 FROM golang:1.13-alpine
 
+RUN set -eux; \
+	export GOROOT="$(go env GOROOT)";
+
 RUN apk update && \
     apk upgrade && \
     apk add --no-cache bash git
 
 RUN go get -u github.com/gin-gonic/gin
-RUN go get -u github.com/jinzhu/gorm
-RUN go get -u github.com/jinzhu/gorm/dialects/postgres
+RUN go get -u gorm.io/gorm
+RUN go get -u gorm.io/driver/postgres
+# HOT RELOAD
+RUN go get -u github.com/githubnemo/CompileDaemon
 
 # Set the Current Working Directory inside the container
 WORKDIR /go/src/airmon
@@ -21,4 +26,7 @@ RUN go build -o main .
 EXPOSE 8081
 
 # Run the executable DEPLOYMENT
-CMD ./main
+# CMD ./main
+
+# HOT RELOAD
+ENTRYPOINT CompileDaemon -log-prefix=false -build="go build ./main.go" -command="./main"
