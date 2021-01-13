@@ -4,6 +4,7 @@ import (
 	"airmon/model"
 	"airmon/services"
 	"net/http"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -21,9 +22,8 @@ func AddInvite(c *gin.Context) {
 		return
 	}
 
-
-	invite.Token= services.HashAndSalt([]byte(aux.Username))
-	invite.Username= aux.Username
+	invite.Token = services.HashAndSalt([]byte(aux.Username))
+	invite.Username = aux.Username
 
 	result := services.Db.Create(&invite)
 
@@ -33,6 +33,8 @@ func AddInvite(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusCreated, gin.H{"status": http.StatusCreated, "message": "Invite created sucessfully"})
+
+	SendInvite(invite.Username, invite.Token)
 }
 
 func DeleteInvite(c *gin.Context) {
