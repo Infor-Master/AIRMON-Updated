@@ -7,6 +7,7 @@
         <b-collapse is-nav id="nav-collapse">
           <b-navbar-nav>
             <b-nav-item href="/#/devices">Dispositivos</b-nav-item>
+            <b-nav-item href="/#/admin">Admin</b-nav-item>
             <b-nav-item href="/#/logout">Logout</b-nav-item>
           </b-navbar-nav>
         </b-collapse>
@@ -81,14 +82,14 @@ export default {
       limit: 100,
       offset: 0,
       device: {},
-      selectedData: { id:"CO2_PPM", text: "CO2"},
+      selectedData: { id:"CO2_PPM", text: "CO2", label: "ppm"},
       options: [
-        { value: { id:"CO2_PPM", text: "CO2"}, text: "CO2 (ppm)" },
-        { value: { id:"NO2_PPM", text: "NO2"}, text: "NO2 (ppm)" },
-        { value: { id:"CH2O_PPM", text: "CH2O"}, text: "CH2O (ppm)" },
-        { value: { id:"O3_PPM", text: "O3"}, text: "O3 (ppm)" },
-        { value: { id:"Temp_C", text: "Temperatura"}, text: "Temperatura (ºC)" },
-        { value: { id:"Hum_100", text: "Humidade"}, text: "Humidade (%)" },
+        { value: { id:"CO2_PPM", text: "CO2", label: "ppm"}, text: "CO2 (ppm)" },
+        { value: { id:"NO2_PPM", text: "NO2", label: "ppm"}, text: "NO2 (ppm)" },
+        { value: { id:"CH2O_PPM", text: "CH2O", label: "ppm"}, text: "CH2O (ppm)" },
+        { value: { id:"O3_PPM", text: "O3", label: "ppm"}, text: "O3 (ppm)" },
+        { value: { id:"Temp_C", text: "Temperatura", label: "ºC"}, text: "Temperatura (ºC)" },
+        { value: { id:"Hum_100", text: "Humidade", label: "%"}, text: "Humidade (%)" },
       ],
       data: [],
       datasource: {},
@@ -206,9 +207,9 @@ export default {
     getGraphData(field) {
       this.datasource = {
         chart: {
-          caption: "Leituras Sensor " + this.selectedData.text,
+          caption: "Leituras Sensor " + field.text,
           subCaption: "",
-          yAxisName: "ppm",
+          yAxisName: field.label,
           theme: "fusion",
         },
         data: [],
@@ -216,7 +217,7 @@ export default {
       for (var i in this.data) {
         this.datasource.data.push({
           label: this.data[i]["CreatedAt"],
-          value: this.data[i][field],
+          value: this.data[i][field.id],
         });
       }
     },

@@ -6,6 +6,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import VueAxios from 'vue-axios'
 import VueFusionCharts from 'vue-fusioncharts'
+import VueJwtDecode from 'vue-jwt-decode'
 import FusionCharts from 'fusioncharts';
 import Column2D from 'fusioncharts/fusioncharts.charts';
 import FusionTheme from 'fusioncharts/themes/fusioncharts.theme.fusion';
@@ -15,6 +16,7 @@ import App from './App.vue'
 import Device from './pages/Device.vue'
 import Homepage from './pages/Homepage.vue'
 import Login from './pages/Login.vue'
+import Admin from './pages/Admin.vue'
 import Register from './pages/Register.vue'
 
 Vue.config.productionTip = false;
@@ -39,6 +41,23 @@ const router = new VueRouter({
             path: '/devices/:id',
             name: 'device',
             component: Device,
+        },
+        {
+            path: '/admin',
+            name: 'admin',
+            component: Admin,
+            beforeEnter: (to, from ,next) => {
+                try {
+                    let decoded = VueJwtDecode.decode(sessionStorage.getItem('session_token'))
+                    if(!decoded.admin){
+                        next({ name: 'devices' })
+                    }else{
+                        next()
+                    }
+                } catch (error) {
+                    next({ name: 'login' })
+                }
+            }
         },
         {
             path: '/logout',
