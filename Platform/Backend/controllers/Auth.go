@@ -3,7 +3,6 @@ package controllers
 import (
 	"airmon/model"
 	"airmon/services"
-	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -21,7 +20,6 @@ func LoginHandler(c *gin.Context) {
 	result := services.Db.Find(&user, "username = ?", creds.Username)
 
 	if result.Error != nil {
-		log.Println(result.Error)
 		c.JSON(http.StatusUnauthorized, gin.H{"status": http.StatusUnauthorized, "message": "Invalid Credentials"})
 		return
 	}
@@ -50,7 +48,7 @@ func RegisterHandler(c *gin.Context) {
 	}
 
 	var auxUser AuxInvite
-
+	var existUser model.User
 	var creds model.Invite
 
 	if err := c.ShouldBindJSON(&auxUser); err != nil {
@@ -62,6 +60,18 @@ func RegisterHandler(c *gin.Context) {
 
 	if result.Error != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"status": http.StatusUnauthorized, "message": "Invalid Credentials"})
+		return
+	}
+
+	result = services.Db.Find(&existUser, "username = ?", auxUser.Username)
+
+	if result.Error != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"status": http.StatusUnauthorized, "message": "Invalid Credentials"})
+		return
+	}
+
+	if result.RowsAffected > 0 {
+		c.JSON(http.StatusUnauthorized, gin.H{"status": http.StatusUnauthorized, "message": "User already invited"})
 		return
 	}
 

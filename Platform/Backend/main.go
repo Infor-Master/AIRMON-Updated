@@ -40,6 +40,21 @@ func main() {
 		c.JSON(404, gin.H{"code": "PAGE_NOT_FOUND", "message": "Page not found"})
 	})
 
+	user := router.Group("/api/user")
+	user.Use(services.AuthorizationRequired())
+	{
+		user.DELETE("/", routes.DeleteUser)
+		user.GET("/", routes.GetUsers)
+	}
+
+	invite := router.Group("/api/invite")
+	invite.Use(services.AuthorizationRequired())
+	{
+		invite.POST("/", routes.AddInvite)
+		invite.DELETE("/", routes.DeleteInvite)
+		invite.GET("/", routes.GetInvites)
+	}
+
 	device := router.Group("/api/device")
 	device.Use(services.AuthorizationRequired())
 	{
