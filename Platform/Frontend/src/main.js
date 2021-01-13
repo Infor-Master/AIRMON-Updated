@@ -1,23 +1,24 @@
-import axios from 'axios'
-import BootstrapVue from 'bootstrap-vue'
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import VueAxios from 'vue-axios'
-import VueFusionCharts from 'vue-fusioncharts'
-import VueJwtDecode from 'vue-jwt-decode'
+import axios from 'axios';
+import BootstrapVue from 'bootstrap-vue';
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap-vue/dist/bootstrap-vue.css';
+import Vue from 'vue';
+import VueRouter from 'vue-router';
+import VueAxios from 'vue-axios';
+import VueFusionCharts from 'vue-fusioncharts';
+import VueJwtDecode from 'vue-jwt-decode';
 import FusionCharts from 'fusioncharts';
 import Column2D from 'fusioncharts/fusioncharts.charts';
 import FusionTheme from 'fusioncharts/themes/fusioncharts.theme.fusion';
 import TimeSeries from 'fusioncharts/fusioncharts.timeseries';
+import JsonCSV from 'vue-json-csv';
 
-import App from './App.vue'
-import Device from './pages/Device.vue'
-import Homepage from './pages/Homepage.vue'
-import Login from './pages/Login.vue'
-import Admin from './pages/Admin.vue'
-import Register from './pages/Register.vue'
+import App from './App.vue';
+import Device from './pages/Device.vue';
+import Homepage from './pages/Homepage.vue';
+import Login from './pages/Login.vue';
+import Admin from './pages/Admin.vue';
+import Register from './pages/Register.vue';
 
 Vue.config.productionTip = false;
 Vue.use(VueRouter);

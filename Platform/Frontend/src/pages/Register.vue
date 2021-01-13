@@ -62,6 +62,7 @@ export default {
     return {
       username: this.username,
       password: this.password,
+      confirmPassword: this.confirmPassword,
       token: this.token,
       message: this.message,
     };
@@ -70,7 +71,7 @@ export default {
     handlerRegister() {
 
       if(this.confirmPassword != this.password){
-        this.message = "Password don't match";
+        this.message = "Passwords don't match";
         return
       }
     

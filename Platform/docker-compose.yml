@@ -54,6 +54,11 @@ services:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=passw0rd
       - POSTGRES_DB=apidb
+      - EMAIL_USER=36824@ufp.edu.pt
+      - EMAIL_PASS=250595559
+      - SMTP_HOST=smtp.gmail.com
+      - SMTP_PORT=587
+      - ADDRESS=localhost:4000
     ports:
       - '8081'
     networks:
