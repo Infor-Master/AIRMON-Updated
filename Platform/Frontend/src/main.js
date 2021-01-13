@@ -7,6 +7,7 @@ import VueRouter from 'vue-router'
 import VueAxios from 'vue-axios'
 
 import App from './App.vue'
+import Device from './pages/Device.vue'
 import Homepage from './pages/Homepage.vue'
 import Login from './pages/Login.vue'
 
@@ -26,15 +27,26 @@ const router = new VueRouter({
             path: '/devices',
             name: 'devices',
             component: Homepage,
+        },
+        {
+            path: '/devices/:id/:limit/:offset',
+            name: 'device',
+            component: Device,
+        },
+        {
+            path: '/logout',
+            name: 'logout',
             beforeEnter: (to, from, next) => {
-                if (localStorage.getItem('session_token') === null){
-                    next({ name: 'login' })
-                }else{
-                    next()
-                }
+                sessionStorage.removeItem('session_token')
+                next({ name: 'login' })
             }
         }
     ]
+})
+
+router.beforeEach((to, from, next) => {
+    if (to.name !== 'login' && sessionStorage.getItem('session_token') === null) next({ name: 'login' })
+    else next()
 })
 
 new Vue({

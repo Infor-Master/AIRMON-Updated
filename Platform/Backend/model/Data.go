@@ -7,6 +7,7 @@ import (
 type Data struct {
 	gorm.Model
 	Device_ID uint    `gorm:"not null"`
+	O3_PPM    float32 `gorm:"not null"`
 	CO2_PPM   float32 `gorm:"not null"`
 	NO2_PPM   float32 `gorm:"not null"`
 	CH2O_PPM  float32 `gorm:"not null"`
