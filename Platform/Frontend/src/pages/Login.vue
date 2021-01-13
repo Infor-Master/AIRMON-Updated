@@ -27,6 +27,9 @@
           <button type="submit" class="btn btn-dark btn-lg btn-block">
             Login
           </button>
+          <button class="btn btn-dark btn-lg btn-block" v-on:click="handlerRegister">
+            Register
+          </button>
         </div>
         <p>{{ message }}</p>
       </form>
@@ -46,6 +49,9 @@ export default {
     };
   },
   methods: {
+    handlerRegister(){
+      this.$router.push({ name: "register" });
+    },
     handlerLogin() {
       this.message = "";
       this.axios({

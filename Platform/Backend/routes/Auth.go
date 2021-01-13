@@ -9,3 +9,7 @@ import (
 func GenerateToken(c *gin.Context) {
 	controllers.LoginHandler(c)
 }
+
+func Register(c *gin.Context) {
+	controllers.RegisterHandler(c)
+}

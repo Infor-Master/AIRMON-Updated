@@ -13,6 +13,8 @@ func init() {
 	services.Db.AutoMigrate(&model.Device{})
 	services.Db.AutoMigrate(&model.Data{})
 	services.Db.AutoMigrate(&model.User{})
+	services.Db.AutoMigrate(&model.Invite{})
+
 
 	var admin model.User
 	admin.Username = "Admin"
@@ -20,6 +22,12 @@ func init() {
 	admin.Password = services.HashAndSalt([]byte("admin123"))
 	admin.Admin = true
 	services.Db.Create(&admin)
+
+
+	var invite model.Invite
+	invite.Username ="User 1"
+	invite.Token="UserAdmitido1"
+	services.Db.Create(&invite)
 }
 
 func main() {
@@ -52,6 +60,8 @@ func main() {
 	auth := router.Group("/api")
 	{
 		auth.POST("/login", routes.GenerateToken)
+		auth.POST("/register", routes.Register)
+
 	}
 
 	router.Run(":8081")

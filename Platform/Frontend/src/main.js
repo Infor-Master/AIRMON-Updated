@@ -15,6 +15,7 @@ import App from './App.vue'
 import Device from './pages/Device.vue'
 import Homepage from './pages/Homepage.vue'
 import Login from './pages/Login.vue'
+import Register from './pages/Register.vue'
 
 Vue.config.productionTip = false;
 Vue.use(VueRouter);
@@ -46,12 +47,17 @@ const router = new VueRouter({
                 sessionStorage.removeItem('session_token')
                 next({ name: 'login' })
             }
+        },
+        {
+            path: '/register',
+            name: 'register',
+            component: Register,
         }
     ]
 })
 
 router.beforeEach((to, from, next) => {
-    if (to.name !== 'login' && sessionStorage.getItem('session_token') === null) next({ name: 'login' })
+    if (to.name !== 'login' && to.name!=='register' && sessionStorage.getItem('session_token') === null) next({ name: 'login' })
     else next()
 })
 
