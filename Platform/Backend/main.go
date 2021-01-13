@@ -15,19 +15,12 @@ func init() {
 	services.Db.AutoMigrate(&model.User{})
 	services.Db.AutoMigrate(&model.Invite{})
 
-
 	var admin model.User
 	admin.Username = "Admin"
 	admin.Name = "Test Admin Account"
 	admin.Password = services.HashAndSalt([]byte("admin123"))
 	admin.Admin = true
 	services.Db.Create(&admin)
-
-
-	var invite model.Invite
-	invite.Username ="User 1"
-	invite.Token="UserAdmitido1"
-	services.Db.Create(&invite)
 }
 
 func main() {

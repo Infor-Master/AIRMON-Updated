@@ -11,7 +11,6 @@ import FusionCharts from 'fusioncharts';
 import Column2D from 'fusioncharts/fusioncharts.charts';
 import FusionTheme from 'fusioncharts/themes/fusioncharts.theme.fusion';
 import TimeSeries from 'fusioncharts/fusioncharts.timeseries';
-import JsonCSV from 'vue-json-csv';
 
 import App from './App.vue';
 import Device from './pages/Device.vue';

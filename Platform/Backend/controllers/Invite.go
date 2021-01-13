@@ -34,7 +34,7 @@ func AddInvite(c *gin.Context) {
 
 	c.JSON(http.StatusCreated, gin.H{"status": http.StatusCreated, "message": "Invite created sucessfully"})
 
-	SendInvite(invite.Username, invite.Token)
+	//services.SendInvite(invite.Username, invite.Token)
 }
 
 func DeleteInvite(c *gin.Context) {
