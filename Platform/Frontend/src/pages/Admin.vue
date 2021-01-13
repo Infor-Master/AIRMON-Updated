@@ -64,6 +64,69 @@
           <p>{{ remmessage }}</p>
         </form>
       </b-card>
+
+      <b-card bg-variant="light" class="bCard">
+        <form class="device" @submit.prevent="handlerAddInvite">
+          <h3>Add Invite</h3>
+          <div class="InviteForm">
+            <div class="form-group">
+              <label>User email</label>
+              <input
+                required
+                v-model="invname"
+                class="form-control form-control-lg"
+                type="text"
+                placeholder="User email"
+              />
+            </div>
+            <button type="submit" class="btn btn-dark btn-lg btn-block">
+              Invite User
+            </button>
+          </div>
+          <p>{{ addmessage }}</p>
+        </form>
+      </b-card>
+
+       <b-card bg-variant="light" class="bCard">
+        <form class="device" @submit.prevent="handlerRemoveInvite">
+          <h3>Remove Invite</h3>
+          <div class="DeviceForm">
+            <div class="form-group">
+              <b-form-select
+                v-model="devRemoveInvites"
+                :options="devInvites"
+                size="sm"
+                class="mr-sm-2"
+              />
+            </div>
+            <button type="submit" class="btn btn-dark btn-lg btn-block">
+              Remove Invite
+            </button>
+          </div>
+          <p>{{ remmessage }}</p>
+        </form>
+      </b-card>
+
+       <b-card bg-variant="light" class="bCard">
+        <form class="device" @submit.prevent="handlerRemoveUser">
+          <h3>Remove User</h3>
+          <div class="DeviceForm">
+            <div class="form-group">
+              <b-form-select
+                v-model="devRemoveUser"
+                :options="devUsers"
+                size="sm"
+                class="mr-sm-2"
+              />
+            </div>
+            <button type="submit" class="btn btn-dark btn-lg btn-block">
+              Remove User
+            </button>
+          </div>
+          <p>{{ remmessage }}</p>
+        </form>
+      </b-card>
+
     </div>
   </div>
 </template>
@@ -79,10 +142,147 @@ export default {
       devname: this.devname,
       devtoken: this.devtoken,
       devRemove: null,
+      devRemoveInvites: null,
       devoptions: [],
+      devInvites: [],
+      devUsers: [],
+      devRemoveUser: null,
+      invname: this.invname
     };
   },
   methods: {
+     handlerRemoveUser() {
+
+      this.message = "";
+      this.axios({
+        method: "delete",
+        url: "/user",
+        baseURL:
+          settings.backend.protocol + settings.URL + settings.backend.path,
+        data: this.devRemoveUser.user,
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem("session_token")}`,
+        },
+      })
+        .then((response) => {
+          this.remmessage = response.data.message;
+          this.getUsers()
+        })
+        .catch((error) => {
+          this.remmessage = error.status + " - " + error.statusText;
+        });
+    },
+    getUsers() {
+      try {
+        this.jwtDecoded = VueJwtDecode.decode(
+          sessionStorage.getItem("session_token")
+        );
+        this.axios({
+          method: "get",
+          url: "/user",
+          baseURL:
+            settings.backend.protocol + settings.URL + settings.backend.path,
+          data: {},
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("session_token")}`,
+          },
+        })
+          .then((response) => {
+            this.devUsers = [];
+            for (var i in response.data.data) {
+              this.devUsers.push({
+                value: {
+                  user: response.data.data[i],
+                },
+                text: response.data.data[i].Username,
+              });
+            }
+          })
+          .catch((error) => {
+            this.remmessage =
+              error.status + " - " + error.statusText;
+          });
+      } catch (error) {
+        this.remmessage = error.status + " - " + error.statusText;
+      }
+    },
+    handlerAddInvite(){
+      this.message = "";
+      this.axios({
+        method: "post",
+        url: "/invite",
+        baseURL:
+          settings.backend.protocol + settings.URL + settings.backend.path,
+        data: {
+          username: this.invname
+          },
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem("session_token")}`,
+        },
+      })
+        .then((response) => {
+          this.addmessage = response.data.message;
+        })
+        .catch((error) => {
+          this.addmessage = error.status + " - " + error.statusText;
+        });
+    },
+    handlerRemoveInvite() {
+      console.log(this.devRemoveInvites.invite);
+
+      this.message = "";
+      this.axios({
+        method: "delete",
+        url: "/invite",
+        baseURL:
+          settings.backend.protocol + settings.URL + settings.backend.path,
+        data: this.devRemoveInvites.invite,
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem("session_token")}`,
+        },
+      })
+        .then((response) => {
+          this.remmessage = response.data.message;
+          this.getInvites()
+        })
+        .catch((error) => {
+          this.remmessage = error.status + " - " + error.statusText;
+        });
+    },
+     getInvites() {
+      try {
+        this.jwtDecoded = VueJwtDecode.decode(
+          sessionStorage.getItem("session_token")
+        );
+        this.axios({
+          method: "get",
+          url: "/invite",
+          baseURL:
+            settings.backend.protocol + settings.URL + settings.backend.path,
+          data: {},
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("session_token")}`,
+          },
+        })
+          .then((response) => {
+            this.devInvites = [];
+            for (var i in response.data.data) {
+              this.devInvites.push({
+                value: {
+                  invite: response.data.data[i],
+                },
+                text: response.data.data[i].Username,
+              });
+            }
+          })
+          .catch((error) => {
+            this.remmessage =
+              error.status + " - " + error.statusText;
+          });
+      } catch (error) {
+        this.remmessage = error.status + " - " + error.statusText;
+      }
+    },
     handlerAddDevice() {
       this.message = "";
       this.axios({
@@ -164,6 +364,8 @@ export default {
   },
   mounted() {
     this.getDevices();
+    this.getInvites();
+    this.getUsers();
   },
   created() {},
   watch: {
@@ -171,4 +373,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.bCard {
+  width: 400px;
+  margin: auto;  
+}</style>
