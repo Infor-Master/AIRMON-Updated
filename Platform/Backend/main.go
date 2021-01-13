@@ -12,6 +12,14 @@ func init() {
 	services.OpenDatabase()
 	services.Db.AutoMigrate(&model.Device{})
 	services.Db.AutoMigrate(&model.Data{})
+	services.Db.AutoMigrate(&model.User{})
+
+	var admin model.User
+	admin.Username = "Admin"
+	admin.Name = "Test Admin Account"
+	admin.Password = services.HashAndSalt([]byte("admin123"))
+	admin.Admin = true
+	services.Db.Create(&admin)
 }
 
 func main() {
@@ -25,6 +33,7 @@ func main() {
 	})
 
 	device := router.Group("/api/device")
+	device.Use(services.AuthorizationRequired())
 	{
 		device.POST("/", routes.AddDevice)
 		device.PUT("/", routes.UpdateDevice)
@@ -34,9 +43,15 @@ func main() {
 	}
 
 	data := router.Group("/api/data")
+	data.Use(services.AuthorizationRequired())
 	{
 		data.POST("/", routes.AddData)
 		data.GET("/:id", routes.GetData)
+	}
+
+	auth := router.Group("/api")
+	{
+		auth.POST("/login", routes.GenerateToken)
 	}
 
 	router.Run(":8081")
