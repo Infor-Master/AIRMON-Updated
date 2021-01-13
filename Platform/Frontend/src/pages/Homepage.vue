@@ -69,7 +69,7 @@ export default {
       }
     },
     deviceHandler(id) {
-      this.$router.push("/devices/" + id + "/100/0");
+      this.$router.push("/devices/" + id);
     },
   },
   mounted() {

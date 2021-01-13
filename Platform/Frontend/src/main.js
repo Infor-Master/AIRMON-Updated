@@ -5,16 +5,22 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import VueAxios from 'vue-axios'
+import VueFusionCharts from 'vue-fusioncharts'
+import FusionCharts from 'fusioncharts';
+import Column2D from 'fusioncharts/fusioncharts.charts';
+import FusionTheme from 'fusioncharts/themes/fusioncharts.theme.fusion';
+import TimeSeries from 'fusioncharts/fusioncharts.timeseries';
 
 import App from './App.vue'
 import Device from './pages/Device.vue'
 import Homepage from './pages/Homepage.vue'
 import Login from './pages/Login.vue'
 
-Vue.config.productionTip = false
-Vue.use(VueRouter)
-Vue.use(VueAxios, axios)
-Vue.use(BootstrapVue)
+Vue.config.productionTip = false;
+Vue.use(VueRouter);
+Vue.use(VueAxios, axios);
+Vue.use(BootstrapVue);
+Vue.use(VueFusionCharts, FusionCharts, TimeSeries, Column2D, FusionTheme);
 
 const router = new VueRouter({
     routes: [
@@ -29,7 +35,7 @@ const router = new VueRouter({
             component: Homepage,
         },
         {
-            path: '/devices/:id/:limit/:offset',
+            path: '/devices/:id',
             name: 'device',
             component: Device,
         },
