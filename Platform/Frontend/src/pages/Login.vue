@@ -64,7 +64,7 @@ export default {
         })
         .catch((error) => {
           this.message =
-            error.response.status + " - " + error.response.statusText;
+            error.status + " - " + error.statusText;
         });
     },
   },
