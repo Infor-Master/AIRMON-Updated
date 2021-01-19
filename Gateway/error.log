@@ -1,3 +1,0 @@
-  File "main.py", line 59, in th_send
-  File "main.py", line 51, in _encryptor
-RuntimeError: Encrypt failed, mbedtls error code: 0x4080!

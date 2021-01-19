@@ -13,3 +13,7 @@ func AddData(c *gin.Context) {
 func GetData(c *gin.Context) {
 	controllers.GetData(c)
 }
+
+func Parse(c *gin.Context) {
+	controllers.Parse(c)
+}

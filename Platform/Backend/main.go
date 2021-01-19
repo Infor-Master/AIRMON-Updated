@@ -69,7 +69,7 @@ func main() {
 	{
 		auth.POST("/login", routes.GenerateToken)
 		auth.POST("/register", routes.Register)
-
+		auth.POST("/parse", routes.Parse)
 	}
 
 	router.Run(":8081")
