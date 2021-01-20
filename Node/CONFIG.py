@@ -1,2 +1,6 @@
-keycode = "$2y$10$ngod9tRVk2VXPxsvW3w.S.Y2jH2ZA9IvRn7SvogjV2LNxrpkZXSzi"
-R0_MQ131 = 1393
+#Node1 = EOAgM7kX4wntjpMivdwO
+#Node2 = T9ut1DVf92QhiMWT4vu8
+#Node3 = Uubw6QRzjXvitM8ELP16
+
+keycode = "EOAgM7kX4wntjpMivdwO"    #Node1
+R0_MQ131 = 1500

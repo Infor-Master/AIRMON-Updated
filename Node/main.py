@@ -1,26 +1,17 @@
-#!/usr/bin/env python
-#
-# Copyright (c) 2019, Pycom Limited.
-#
-# This software is licensed under the GNU GPL version 3 or any
-# later version, with permitted additional terms. For more information
-# see the Pycom Licence v1.0 document supplied with this file, or
-# available at https://www.pycom.io/opensource/licensing
-#
-
 from network import LoRa
 import socket
 import crypto
 import utime
 import _thread
 import pycom
-import SDmount
+import os
+import machine
+from machine import SD
 import CONFIG as cfg
 from MQ131_O3_Sensor import MQ131
 from MiCs6814_MultiChannel_Sensor import MiCS6814
 from SEN0219_CO2_Sensor import SEN0219_SERIAL
 from PMS5003ST_Sensor import PMS5003ST
-from machine import SD
 
 keycode = cfg.keycode
 R0_MQ131 = cfg.R0_MQ131
@@ -62,10 +53,10 @@ def th_send(data, id):
             gases=MiCS.calcAllGases()
             MiCS.deinit()
             NO2=str(gases[1]); #Possui mais gases mas só queremos o NO2
-            print('[PMS] finished')
+            print('[MiCS] finished')
 
             print('[MQ] starting...')
-            MQ = MQ131(pin='P19', R0=R0_MQ131)
+            MQ = MQ131(pin='P16', R0=R0_MQ131)
             utime.sleep(1)
             MQvolts = MQ.MQRead()
             MQPPB = MQ.MQGet_PPB(MQvolts)
@@ -77,7 +68,7 @@ def th_send(data, id):
             SEN_S = SEN0219_SERIAL(TX='P20', RX='P21')
             #SEN_S.SEN_Serial_ABCOn()
             utime.sleep(1)
-            print('[PMS] reading...')
+            print('[SEN] reading...')
             SENdata = SEN_S.SEN_Serial_read()
             SEN_S.deinit()
             if(SENdata==False):
@@ -88,15 +79,15 @@ def th_send(data, id):
             CO2=str(SENPPM)
             print('[SEN] finished')
 
-            
             data = '{"keycode": "'+keycode+'","CO2": '+CO2+',"NO2": '+NO2+',"O3": '+O3+',"CH2O": '+CH2O+',"Temp": '+Temp+',"Humd": '+Humd+'}'
-            
+
             print('[Data] sending...')
             s.send(data)
             print("[DATA] saving localy...")
             f = open('/sd/DataLog.csv', 'a')
             f.write("\";"+data+"\"\n")
             f.close()
+            print("[DATA] : "+data)
             print("[DATA] finished")
 
             pycom.rgbled(0x000000) # off

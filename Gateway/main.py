@@ -27,16 +27,19 @@ def _encryptor(data):
     f = open(config.publicKeyCert)
     pk = f.read()
     f.close()
-    payload='{"msg": "'+str(binascii.b2a_base64(crypto.rsa_encrypt(data, pk)))+'"}'
+    #payload='{"msg": "'+str(binascii.b2a_base64(crypto.rsa_encrypt(data, pk)))+'"}'
+    payload='{"msg": "'+str(binascii.b2a_base64(data))+'"}'
     return payload
 
 def th_send(data, id):
     for i in range(5):  #5 attempts
         try:
             pycom.rgbled(0x0000ff) # blue
-            #payload=_encryptor(data)
+            payload=_encryptor(data)
             payload='{"msg": "'+data+'"}'
+            print(payload)
             res = urequests.post(config.url,headers=config.headers, data=payload)
+            print(res.status_code)
             if res.status_code == 200:
                 res.close()
                 pycom.rgbled(0x000000) # off
@@ -47,6 +50,7 @@ def th_send(data, id):
             import sys
             pycom.rgbled(0xff0000) # red
             with open("error.log", "a") as f:
+                print(e)
                 sys.print_exception(e, f)
 
 #def th_rtc(data, id):
@@ -55,7 +59,7 @@ def th_send(data, id):
 pycom.heartbeat(False)
 while True:
     try:
-        if not wlan.isconnected():
+        if not c_wifi.wlan.isconnected():
             machine.reset()
         data = c_lora.lora_socket.recv(256)
         if data:
@@ -68,4 +72,5 @@ while True:
         import sys
         pycom.rgbled(0xff0000) # red
         with open("error.log", "a") as f:
+            print(e)
             sys.print_exception(e, f)

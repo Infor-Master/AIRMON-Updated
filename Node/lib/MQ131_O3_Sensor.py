@@ -16,6 +16,7 @@ class MQ131:
         self.pin = pin
         self.R0 = R0
         self.adc = ADC(bits=12)
+        self.adc.vref_to_pin('P22')
         self.apin = self.adc.channel(pin=self.pin, attn=ADC.ATTN_11DB)
 
     def deinit(self):
