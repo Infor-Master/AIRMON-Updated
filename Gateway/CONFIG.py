@@ -4,10 +4,24 @@ headers = {"Content-Type": "application/json", "Accept": "application/json"}
 publicKeyCert = "cert/public.pem"
 
 networks = [
-    ['WPA2', 'test', '13572469'],
-    ['WPA2E', 'eduroam', '012938', 'convidado@ufp'],
-    #['WPA2E', 'eduroam', 'ola123', 'teste@ufp.pt'],
-    #['WPA2E', 'eduroam', '250595559', '36824@ufp.pt']
-    #['WPA2', 'ZON-5100', 'ba876d3a1a72'],
-    #['WPA2', 'Vodafone-69E89E', 'bx6ByA2G6V']
+    {
+    "AUTH": "WPA2E",
+    "SSID": "eduroam",
+    "USER": "convidado@ufp",
+    "PASS": "012938"
+    },{
+    "AUTH": "WPA2E",
+    "SSID": "eduroam",
+    "USER": "teste@ufp.pt",
+    "PASS": "ola123"
+    },{
+    "AUTH": "WPA2E",
+    "SSID": "eduroam",
+    "USER": "36824@ufp.pt",
+    "PASS": "250595559"
+    },{
+    "AUTH": "WPA2",
+    "SSID": "",
+    "PASS": ""
+    }
     ]

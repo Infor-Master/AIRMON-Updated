@@ -14,7 +14,7 @@ from coms import C_RTC
 #  Communinations        #
 ##########################
 
-c_wifi = C_Wifi(config.networks)
+c_wifi = C_Wifi(config.networks[0])
 c_rtc = C_RTC()
 c_lora = C_LoRa()
 
