@@ -271,7 +271,7 @@ export default {
                 value: {
                   invite: response.data.data[i],
                 },
-                text: response.data.data[i].Username,
+                text: response.data.data[i].Username + " - " + response.data.data[i].Token,
               });
             }
           })

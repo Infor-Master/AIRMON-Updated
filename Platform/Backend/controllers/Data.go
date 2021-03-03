@@ -82,7 +82,7 @@ func GetData(c *gin.Context) {
 		return
 	}
 
-	services.Db.Where("device_id = ?", id).Limit(limit).Offset(limit * offset).Find(&data)
+	services.Db.Order("created_at desc").Where("device_id = ?", id).Limit(limit).Offset(limit * offset).Find(&data)
 
 	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": data})
 }
